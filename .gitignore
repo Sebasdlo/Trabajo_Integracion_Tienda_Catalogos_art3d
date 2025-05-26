@@ -1,0 +1,15 @@
+# Node.js / React
+node_modules/
+build/
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# Docker
+*.log
+*.pid
+
+# Visual Studio Code
+.vscode/
