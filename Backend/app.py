@@ -1,14 +1,13 @@
-from flask import Flask, jsonify  # type: ignore
-
+from flask import Flask, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/')
 def home():
     return "API de catálogo 3D funcionando correctamente."
 
-@app.route('/api/figuras', methods=['GET'])
 def get_figuras():
     figuras = [
         {"id": 1, "nombre": "Dinosaurio 3D", "precio": 15000},
