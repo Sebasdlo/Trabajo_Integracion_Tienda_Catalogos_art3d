@@ -1,47 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import './Home.css';
+import ProductCard from '../../components/ProductCard/ProductCard';
+import ProductCarrusel from '../../components/ProductCarrusel/ProductCarrusel';
+import HeroCarrusel from '../../components/HeroCarrusel/HeroCarrusel';
+import ContactBanner from '../../components/ContactBanner/ContactBanner';
 
-function App() {
-  const [figuras, setFiguras] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetch('/api/products')
-      .then((res) => {
-        if (!res.ok) throw new Error(`Error HTTP: ${res.status}`);
-        return res.json();
-      })
-      .then((data) => {
-        setFiguras(data.figuras);
-        setError(null);
-      })
-      .catch((err) => {
-        console.error('Error:', err);
-        setError(err.message);
-      });
-  }, []);
-
-  const renderFiguras = () => {
-    if (error) {
-      return <p style={{ color: 'red' }}>Error: {error}</p>;
-    } else if (figuras.length > 0) {
-      return figuras.map((figura) => (
-        <div key={figura.id}>
-          <h3>{figura.nombre}</h3>
-          <p>Precio: ${figura.precio}</p>
-        </div>
-      ));
-    } else {
-      return <p>Cargando figuras...</p>;
-    }
-  };
+function Home() {
+  const productos = [
+    { id: 1, nombre: 'Figura Gato Rison', imagen: '/img/gato.jpg', precio: 30000 },
+    { id: 2, nombre: 'Jarra Un poco de ruido 1L', imagen: '/img/jarra.jpg', precio: 35700 },
+    { id: 3, nombre: 'Soporte Deadpool', imagen: '/img/deadpool.jpg', precio: 22000 },
+    { id: 4, nombre: 'Soporte Stitch', imagen: '/img/stitch.jpg', precio: 27000 },
+    { id: 5, nombre: 'Soporte Deadpool', imagen: '/img/deadpool.jpg', precio: 22000 },
+    { id: 6, nombre: 'Soporte Stitch', imagen: '/img/stitch.jpg', precio: 27000 },
+  ];
 
   return (
-    <div className="App">
-      <h1>Catálogo de Figuras 3D</h1>
-      <p>Bienvenido a la tienda digital de impresión 3D.</p>
-      {renderFiguras()}
+    <div className="home">
+      <section className="hero">
+        <HeroCarrusel />
+      </section>
+      {/* Carrusel de novedades */}
+      <ProductCarrusel productos={productos} titulo="Novedades" />
+
+      {/* Grid de artículos recientes */}
+      <section className="destacados">
+        <h2>Artículos Recientes</h2>
+        <div className="grid">
+          {productos.map((prod) => (
+            <ProductCard key={prod.id} producto={prod} />
+          ))}
+        </div>
+      </section>
+      <ContactBanner />
     </div>
   );
 }
 
-export default App;
+export default Home;
