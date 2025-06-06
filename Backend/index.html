@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos - MaginArte 3D</title>
+    <!-- Agregar Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .tab-container {
+            margin-bottom: 20px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background: #f1f1f1;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab-btn:hover {
+            background: #ddd;
+        }
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .btn-danger {
+            background: #e74c3c;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        .btn-success {
+            background: #2ecc71;
+        }
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .img-preview {
+            max-width: 100px;
+            max-height: 100px;
+            display: block;
+            margin-top: 10px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            width: 70%;
+            display: inline-block;
+        }
+        .search-container button {
+            width: 28%;
+            margin-left: 2%;
+            margin-top: 0;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-success {
+            color: #3c763d;
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+        }
+        .alert-error {
+            color: #a94442;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+        }
+        .image-viewer-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .img-preview {
+            max-width: 100px;
+            max-height: 100px;
+            display: block;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .img-preview:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="imageViewerModal" class="image-viewer-modal">
+        <span class="close-modal" onclick="closeImageViewer()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <div class="container">
+        <h1>Gestión de Productos - MaginArte 3D</h1>
+
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'add-product')">Agregar Producto</button>
+                <button class="tab-btn" onclick="openTab(event, 'view-products')">Consultar Productos</button>
+                <button class="tab-btn" onclick="openTab(event, 'update-product')">Actualizar Producto</button>
+                <button class="tab-btn" onclick="openTab(event, 'delete-product')">Eliminar Producto</button>
+            </div>
+
+            <!-- Tab 1: Agregar Producto -->
+            <div id="add-product" class="tab-content active">
+                <h2>Agregar Nuevo Producto</h2>
+                <div id="add-alert"></div>
+                <form id="add-product-form">
+                    <label for="add-nombre">Nombre:</label>
+                    <input type="text" id="add-nombre" name="nombre" required>
+
+                    <label for="add-precio">Precio:</label>
+                    <input type="number" id="add-precio" name="precio" step="0.01" min="0" required>
+
+                    <label for="add-categoria">Categoría:</label>
+                    <select id="add-categoria" name="categoria" required>
+                        <option value="">Seleccione una categoría</option>
+                        <option value="accesorio">Accesorio</option>
+                        <option value="mitologia">Mitología</option>
+                    </select>
+
+                    <label for="add-imagen">Imagen (opcional):</label>
+                    <input type="file" id="add-imagen" name="imagen" accept="image/*">
+                    <img id="add-preview" class="img-preview" style="display: none;">
+
+                    <button type="submit" class="btn-success">Guardar Producto</button>
+                </form>
+            </div>
+
+            <!-- Tab 2: Consultar Productos -->
+            <div id="view-products" class="tab-content">
+                <h2>Consultar Productos</h2>
+                <div class="search-container">
+                    <input type="text" id="search-term" placeholder="Buscar por nombre...">
+                    <button onclick="searchProducts()" class="btn-success">Buscar</button>
+                </div>
+                <div id="products-list">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Imagen</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body">
+                            <!-- Los productos se cargarán aquí dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 3: Actualizar Producto -->
+            <div id="update-product" class="tab-content">
+                <h2>Actualizar Producto</h2>
+                <div id="update-alert"></div>
+                <div class="search-container">
+                    <input type="text" id="update-search" placeholder="Ingrese ID del producto a actualizar">
+                    <button onclick="loadProductForUpdate()" class="btn-success">Cargar Producto</button>
+                </div>
+
+                <form id="update-product-form" style="display: none;">
+                    <input type="hidden" id="update-id" name="id">
+
+                    <label for="update-nombre">Nombre:</label>
+                    <input type="text" id="update-nombre" name="nombre" required>
+
+                    <label for="update-precio">Precio:</label>
+                    <input type="number" id="update-precio" name="precio" step="0.01" min="0" required>
+
+                    <label for="update-categoria">Categoría:</label>
+                    <select id="update-categoria" name="categoria" required>
+                        <option value="">Seleccione una categoría</option>
+                        <option value="tecnologia">Tecnología</option>
+                        <option value="ropa">Ropa</option>
+                        <option value="hogar">Hogar</option>
+                        <option value="mitologia">Mitología</option>
+                    </select>
+
+                    <label for="update-imagen">Imagen (opcional):</label>
+                    <input type="file" id="update-imagen" name="imagen" accept="image/*">
+                    <img id="update-preview" class="img-preview">
+                    <input type="hidden" id="current-image" name="current_image">
+
+                    <button type="submit" id="btn-actualizar" class="btn-success">Actualizar Producto</button>
+                </form>
+            </div>
+
+            <!-- Tab 4: Eliminar Producto -->
+            <div id="delete-product" class="tab-content">
+                <h2>Eliminar Producto</h2>
+                <div id="delete-alert"></div>
+                <div class="search-container">
+                    <input type="text" id="delete-search" placeholder="Ingrese ID del producto a eliminar">
+                    <button onclick="loadProductForDelete()" class="btn-success">Cargar Producto</button>
+                </div>
+
+                <div id="product-to-delete" style="display: none; margin-top: 20px;">
+                    <h3>Información del Producto</h3>
+                    <p><strong>Nombre:</strong> <span id="delete-nombre"></span></p>
+                    <p><strong>Precio:</strong> $<span id="delete-precio"></span></p>
+                    <p><strong>Categoría:</strong> <span id="delete-categoria"></span></p>
+                    <img id="delete-preview" class="img-preview">
+
+                    <button onclick="confirmDelete()" class="btn-danger" id="confirm-delete-btn" style="margin-top: 20px;">Confirmar Eliminación</button>
+                    <input type="hidden" id="delete-id">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

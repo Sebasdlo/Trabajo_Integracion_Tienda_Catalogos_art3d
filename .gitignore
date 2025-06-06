@@ -6,6 +6,7 @@ build/
 __pycache__/
 *.pyc
 .env
+Backend/firebase.json
 
 # Docker
 *.log

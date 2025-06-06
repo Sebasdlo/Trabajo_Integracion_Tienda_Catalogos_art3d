@@ -13,7 +13,7 @@ class FirebaseService:
         if not firebase_admin._apps:
             cred = credentials.Certificate("firebase.json")
             firebase_admin.initialize_app(cred, {
-                'databaseURL': "https://art-3d-6fc32-default-rtdb.firebaseio.com/"
+                'databaseURL': "https://base-de-datos-catalogos-art3d-default-rtdb.firebaseio.com/"
             })
 
         self.ref = db.reference('figuras')
