@@ -1,0 +1,29 @@
+name: Run Flask API Tests
+
+on:
+  push:
+    branches: [backend]
+  pull_request:
+    branches: [backend]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r Requirements.txt
+
+    - name: Ejecutar pruebas
+      run: |
+        pytest
