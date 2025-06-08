@@ -1,0 +1,61 @@
+.product-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+  transform: scale(1.02);
+}
+
+/* 🔥 NUEVO contenedor con línea abajo */
+/* Removed duplicate .image-wrapper selector */
+
+/* 🔥 contenido bien separado */
+.info {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.info h3 {
+  font-size: 1rem;
+  margin-top: 0rem; /* 🔥 separación desde arriba */
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+  color: #333;
+}
+
+
+.info .precio {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+  color: #000;
+}
+
+.info .cuotas {
+  font-size: 0.85rem;
+  color: #333;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
+}
+.image-wrapper {
+  border-bottom: 2px solid #000;
+}
+
+.product-card img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  display: block;
+}
