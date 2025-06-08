@@ -8,13 +8,12 @@ function ProductCard({ producto }) {
         <img src={producto.imagen || producto.imagenUrl} alt={producto.nombre} />
       </div>
       <div className="info">
-        <h3>{producto.nombre}</h3>
-        <p className="categoria">{producto.categoria} - {producto.subcategoria}</p>
-        <p className="precio">${producto.precio.toLocaleString('es-CO')}</p>
-        <p className="cuotas">
-          <strong>3</strong> cuotas sin interés de{' '}
-          <strong>${Math.round(producto.precio / 3).toLocaleString('es-CO')}</strong>
-        </p>
+        <h3 className="nombre">{producto.nombre}</h3>
+        <div className="detalles">
+          <span className="categoria">{producto.categoria}</span>
+          <span className="subcategoria">{producto.subcategoria}</span>
+        </div>
+        <p className="precio">${producto.precio.toLocaleString('es-CO')} COP</p>
       </div>
     </div>
   );

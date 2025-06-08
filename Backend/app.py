@@ -12,6 +12,10 @@ firebase_service = FirebaseService()
 
 FIGURA_NO_ENCONTRADA = 'Figura no encontrada'
 
+@app.route('/')
+def home():
+    return "API de catálogo 3D funcionando correctamente."
+
 @app.route('/figuras', methods=['POST'])
 def create_figura():
     try:
