@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    GOOGLE_APPLICATION_CREDENTIALS = 'Backend/firebase.json'
+    GOOGLE_APPLICATION_CREDENTIALS = 'Backend\\firebase.json'
   }
 
   stages {
@@ -15,10 +15,9 @@ pipeline {
     stage('Copiar credenciales Firebase') {
       steps {
         withCredentials([file(credentialsId: 'firebase-credentials', variable: 'FIREBASE_FILE')]) {
-          // Asegura que exista el directorio y copia el archivo
-          sh '''
-            mkdir -p Backend
-            cp "$FIREBASE_FILE" Backend/firebase.json
+          bat '''
+          if not exist Backend mkdir Backend
+          copy "%FIREBASE_FILE%" Backend\\firebase.json
           '''
         }
       }
@@ -26,9 +25,9 @@ pipeline {
 
     stage('Build y Deploy con Docker') {
       steps {
-        sh '''
-          docker-compose down || true
-          docker-compose up --build -d
+        bat '''
+        docker-compose down || exit 0
+        docker-compose up --build -d
         '''
       }
     }
