@@ -194,7 +194,7 @@ const actualizarFigura = async (e) => {
       <h2>Agregar Nuevo Producto</h2>
       <form onSubmit={agregarFigura}>
         <input name="nombre" value={formulario.nombre} onChange={handleInput} placeholder="Nombre" required />
-        <input name="precio" type="" value={formulario.precio} onChange={handleInput} placeholder="Precio" required />
+        <input name="precio" type="number" value={formulario.precio} onChange={handleInput} placeholder="Precio" required />
         <select
           id="categoria"
           name="categoria"
