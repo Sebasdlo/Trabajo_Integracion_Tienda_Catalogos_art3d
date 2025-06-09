@@ -9,7 +9,6 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=/app/firebase.json
     volumes:
       - ./Backend:/app
-      - ./Backend/firebase.json:/app/firebase.json:ro  # 🔐 Se monta el secreto
     networks:
       - app-network
 

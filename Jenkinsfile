@@ -12,17 +12,6 @@ pipeline {
       }
     }
 
-    stage('Copiar credenciales Firebase') {
-      steps {
-        withCredentials([file(credentialsId: 'firebase-credentials', variable: 'FIREBASE_FILE')]) {
-          bat '''
-          if not exist Backend mkdir Backend
-          copy "%FIREBASE_FILE%" Backend\\firebase.json
-          '''
-        }
-      }
-    }
-
     stage('Build y Deploy con Docker') {
       steps {
         bat '''
