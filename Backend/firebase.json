@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "base-de-datos-catalogos-art3d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQCb9cKWyo4TkH07\nf3LoHazYit4IqxYO6+TjptCxDHOSqICLn/89it2oJBHFa7CfYXR1XSFArEBqXm/i\nuT1bCxLIGhbdbGRJuPcG8oz8rsCBna3oPuZYrA8V/I7sfprFA4tAehii4Nb9Vivj\nQwvlN2NBROcKD0Zvf4GgyyeYgMrAn2mHTr5OCMfneJA2h5jygkRWp3zmzcp7cy4l\nCkZdO1mbXs9voBKtxMajDi1exnMWOL90UpodG3VJ6wL7tAgcbk2tAUfYjeAgKkDB\ndeOnTiYbVf3ZFz10PtuuOi4CqNFTAj0Ipmp334U8D096WFKq/VfF/hYpSDmDfaIK\nz49jdR83AgMBAAECgf8jjJX7bsbVrs5kZyEVTxe8noFJHi67zpDWRD7zK2rwXVoc\n08ThydSAQseN/ElVOCzbDCMe1vdfZa7P4Q8MKhCWXsVuDaFG8GnW0TZ++N3ZYlPn\nUQWo1kQDc6wvaSTPDtKQ0MtjZBjoeNoAmQuGfzeoIXXxxgIL4Koj/KMoAbrqLNSe\n8z6SrAV/IJswaKQEIvYNYp9Zj5nTrP8IIfQ+VzclbdOYq0447LT33ib6dCRCqzbv\nSCCQeVoIbF+FzCaEUQCBksuNzvqsnYxj3b4VXbHYiLrlVXRZobe4OBb+8530j2z0\n1qE6i41asJEBbwjo1ygCPcJw7FWL7KV8NfaaOgECgYEAzna9amXmlMjlpP4+BQWw\nmZp/5i83pJw1ne78JhaacQXwTjHEMbxlrNWZowbSNprETAJp8nbenvwaPeH9IqnP\neCXWvjGfE3HN8OwyeWWQg1UYy+kNbaO0xWWUZEU/tNxAGW8hl0cACrdvP+ELUDKc\nS0Hc3Gzrc/hXti0dB5FE+ukCgYEAwWEDd4wdAuVnoQ6sY5v9YSHcXtjYr8ibgDQz\nF2ZeHva7ySFckSkixBQ5bl+eSmG0sIoNzXxfyT3FLqC1O8+KPD3uoqRI2QPAfwjd\nJ+Wm3fldP8sc64YYwedgbjdLEUJeJTQ7SRcSwzexcO9+YXr9qdKk0pz66zl/Za6U\n8ziUtR8CgYEAnP9H299u7lax4bv/FzyTZMpKVZQ0ILU0REtVa/UmLanRaPSI9zUG\nr92hPYnTUfhwKkhvnhNsB8M2hTYSkkhEXl2PpQMArv2MF5bUbuGfeW69M1mdf3DL\n5oruwyyxW+tbxrtt9KXlz0BblVygiLRjiwqjUu50QLRopjw55eY+aPkCgYBVlCRf\npH82R+Wrjf3WezMP6FdJFjgW2vWOMAuoQGJI27JRGVWI3CaJldWwtdosWr8HHaFs\nHa2aNp7ruq1Z0cgATvwrt/6RI6rtzTNqM6S8OV3+HFopFQghz86KGCg9dByL5GiU\nOQTRpfT94M8SPsbBf/n3Rwd4T9LEYhWC6bhNywKBgHMXRiB56m0wvJEbLywhqa79\n+p3yF58lsotDdYnhbQvqJa4afMdd8glJu+6ekV8HoP4L11nykoccGnstmQI/iHuT\nrv3aMb93Y+B7YVg0sOE3g1zSXEQT966tnbPKVSaFg/LmSUBZccMNtn9wuiWSxy3H\nUG8sxN0hfhZGw0ggb0IM\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@base-de-datos-catalogos-art3d.iam.gserviceaccount.com",
+  "client_id": "102932539081509049888",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40base-de-datos-catalogos-art3d.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
