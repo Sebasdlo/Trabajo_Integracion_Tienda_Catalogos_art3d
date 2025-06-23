@@ -21,7 +21,10 @@ pipeline {
       steps {
         dir('Backend') {
           bat '''
+          echo 🔧 Instalando dependencias del backend
           pip install -r Requirements.txt
+          
+          echo 🧪 Ejecutando pruebas y generando cobertura
           pytest --cov=. --cov-report=xml --cov-report=term
           '''
         }
@@ -32,7 +35,10 @@ pipeline {
       steps {
         dir('Frontend') {
           bat '''
+          echo 🔧 Instalando dependencias del frontend
           npm install
+
+          echo 🧪 Ejecutando pruebas y generando cobertura
           npm test -- --coverage --watchAll=false
           '''
         }
@@ -42,6 +48,7 @@ pipeline {
     stage('Levantar contenedores') {
       steps {
         bat '''
+        echo 🐳 Reiniciando contenedores Docker
         docker-compose down || exit 0
         docker-compose up --build -d
         '''
@@ -51,8 +58,13 @@ pipeline {
     stage('Subir cobertura a Codecov') {
       steps {
         powershell '''
+        Write-Host "⬆️ Descargando script de Codecov para Windows"
         Invoke-WebRequest -Uri "https://uploader.codecov.io/latest/windows/codecov.ps1" -OutFile "codecov.ps1"
+
+        Write-Host "📤 Subiendo cobertura del backend"
         powershell -ExecutionPolicy Bypass -File codecov.ps1 -f "Backend/coverage.xml" -F backend -t "$env:CODECOV_TOKEN"
+
+        Write-Host "📤 Subiendo cobertura del frontend"
         powershell -ExecutionPolicy Bypass -File codecov.ps1 -f "Frontend/coverage/lcov.info" -F frontend -t "$env:CODECOV_TOKEN"
         '''
       }
