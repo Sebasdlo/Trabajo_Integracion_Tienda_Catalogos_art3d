@@ -30,9 +30,14 @@ useEffect(() => {
   const API_URL = process.env.REACT_APP_API_URL;
 
   const obtenerFiguras = async () => {
+    if (!API_URL) {
+      setAlerta('API_URL no está configurada');
+      setFiguras([]);
+      return;
+    }
     try {
       const res = await fetch(API_URL);
-      if (!res.ok) {
+      if (!res?.ok) {
         throw new Error('Error de respuesta del servidor');
       }
       const data = await res.json();
