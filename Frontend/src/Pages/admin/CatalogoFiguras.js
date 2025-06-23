@@ -38,6 +38,8 @@ useEffect(() => {
     try {
       const res = await fetch(API_URL);
       if (!res?.ok) {
+        const errorText = await res.text();
+        console.error('Respuesta no OK:', res.status, errorText);
         throw new Error('Error de respuesta del servidor');
       }
       const data = await res.json();

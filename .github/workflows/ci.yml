@@ -37,7 +37,8 @@ jobs:
 
       - name: ⏳ Esperar a que el backend esté listo
         run: |
-          until curl -sSf http://localhost:5000/figuras; do
+          for i in {1..15}; do
+            curl -sSf http://localhost:5000/figuras && break
             echo "Waiting for backend..."
             sleep 2
           done
