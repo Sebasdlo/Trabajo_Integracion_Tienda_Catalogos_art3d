@@ -636,8 +636,10 @@ test('Muestra error si ocurre excepción al actualizar figura', async () => {
     json: () => Promise.resolve({ error: 'Fallo en el servidor' })
   });
 
-  render(<CatalogoFiguras />);
-  fireEvent.click(screen.getByText('Consultar'));
+  await act(async () => {
+    render(<CatalogoFiguras />);
+    fireEvent.click(screen.getByText('Consultar'));
+  });
 });
 test('Evita enviar si el campo nombre está vacío', async () => {
   render(<CatalogoFiguras />);

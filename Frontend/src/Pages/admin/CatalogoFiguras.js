@@ -31,6 +31,9 @@ useEffect(() => {
   const obtenerFiguras = async () => {
     try {
       const res = await fetch(API_URL);
+      if (!res.ok) {
+        throw new Error('Error de respuesta del servidor');
+      }
       const data = await res.json();
       const lista = Object.entries(data || {}).map(([id, val]) => ({ id, ...val }));
       setFiguras(lista);
