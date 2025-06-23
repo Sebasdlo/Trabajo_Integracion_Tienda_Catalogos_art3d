@@ -1,0 +1,63 @@
+name: CI Backend + Frontend
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-ci:
+    runs-on: ubuntu-latest
+
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+    steps:
+      # 1. ✅ Clonar el repositorio
+      - name: 🔁 Clonar repositorio
+        uses: actions/checkout@v3
+
+      # 2. ✅ Configurar entornos
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: 🧰 Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. ✅ Levantar los contenedores (si aplica)
+      - name: 🐳 Levantar contenedores con Docker Compose
+        run: |
+          docker-compose --version
+          docker-compose up -d --build
+
+      # 4. ✅ Backend - Instalar dependencias y correr pruebas
+      - name: 📦 Backend - Instalar dependencias y ejecutar pruebas
+        working-directory: Backend
+        run: |
+          echo "🔧 Instalando dependencias Python"
+          pip install -r Requirements.txt
+
+          echo "🧪 Ejecutando pruebas backend"
+          pytest --cov=. --cov-report=xml --cov-report=term
+
+      # 5. ✅ Frontend - Instalar dependencias y correr pruebas
+      - name: 📦 Frontend - Instalar dependencias y ejecutar pruebas
+        working-directory: Frontend
+        run: |
+          echo "🔧 Instalando dependencias Node.js"
+          npm install
+
+          echo "🧪 Ejecutando pruebas frontend"
+          npm test -- --coverage --watchAll=false
+
+      # 6. ✅ Subir cobertura a Codecov
+      - name: 📤 Subir cobertura a Codecov
+        run: |
+          curl -s https://codecov.io/bash > codecov.sh
+          bash codecov.sh -f Backend/coverage.xml -F backend -t ${{ secrets.CODECOV_TOKEN }}
+          bash codecov.sh -f Frontend/coverage/lcov.info -F frontend -t ${{ secrets.CODECOV_TOKEN }}
