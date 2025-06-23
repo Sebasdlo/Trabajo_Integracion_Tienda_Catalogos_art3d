@@ -32,8 +32,8 @@ jobs:
       # 3. ✅ Levantar los contenedores (si aplica)
       - name: 🐳 Levantar contenedores con Docker Compose
         run: |
-          docker-compose --version
-          docker-compose up -d --build
+          docker compose version
+          docker compose up -d --build
 
       # 4. ✅ Backend - Instalar dependencias y correr pruebas
       - name: 📦 Backend - Instalar dependencias y ejecutar pruebas
@@ -61,3 +61,8 @@ jobs:
           curl -s https://codecov.io/bash > codecov.sh
           bash codecov.sh -f Backend/coverage.xml -F backend -t ${{ secrets.CODECOV_TOKEN }}
           bash codecov.sh -f Frontend/coverage/lcov.info -F frontend -t ${{ secrets.CODECOV_TOKEN }}
+
+      # 7. ✅ Apagar contenedores
+      - name: 🧹 Apagar contenedores y limpiar entorno
+        run: |
+          docker compose down
