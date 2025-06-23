@@ -46,9 +46,6 @@ def get_figura(figura_id):
 def get_all_figuras():
     try:
         figuras = firebase_service.get_all_figuras()
-        # Si es lista, devolver como lista, si es dict, devolver como dict
-        if isinstance(figuras, list):
-            return jsonify({'lista': figuras}), 200
         return jsonify(figuras or {}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
