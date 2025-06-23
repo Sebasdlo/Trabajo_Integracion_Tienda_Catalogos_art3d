@@ -17,10 +17,11 @@ useEffect(() => {
   obtenerFiguras();
 }, []);
 
-// 2. Para limpiar la alerta después de 3 segundos
+// 2. Para limpiar la alerta después de 3 segundos (o 2000ms en test)
 useEffect(() => {
   if (alerta) {
-    const timer = setTimeout(() => setAlerta(''), 3000);
+    const tiempo = process.env.NODE_ENV === 'test' ? 2000 : 3000;
+    const timer = setTimeout(() => setAlerta(''), tiempo);
     return () => clearTimeout(timer);
   }
 }, [alerta]);
@@ -39,8 +40,10 @@ useEffect(() => {
       setFiguras(lista);
     } catch (error) {
       console.error('Error al obtener figuras:', error);
-      setAlerta('Error al obtener figuras');
-      setFiguras([]);
+      setTimeout(() => {
+        setAlerta('Error al obtener figuras');
+        setFiguras([]);
+      }, 0);
     }
   };
 
@@ -79,9 +82,7 @@ useEffect(() => {
     setSubcategoria('');
     setImagen(null);
     setIdActual('');
-    const tiempoAlerta = process.env.NODE_ENV === 'test' ? 100 : 1000;
-setTimeout(() => setAlerta(''), tiempoAlerta);
-
+    // Elimina el setTimeout aquí, la alerta se limpia por useEffect
   };
 
   const comprimirImagen = async (file) => {
@@ -94,13 +95,24 @@ setTimeout(() => setAlerta(''), tiempoAlerta);
   };
 
   const cargarParaActualizar = async (id) => {
-    const res = await fetch(`${API_URL}/${id}`);
-    if (res.ok) {
+    try {
+      const res = await fetch(`${API_URL}/${id}`);
+      if (!res?.ok) {
+        setTimeout(() => {
+          setAlerta('Error al actualizar figura');
+        }, 0);
+        return;
+      }
       const data = await res.json();
       setFormulario(data);
       setSubcategoria(data.subcategoria || '');
       setIdActual(id);
       setTab('actualizar');
+    } catch (error) {
+      console.error('Error al cargar figura para actualizar:', error);
+      setTimeout(() => {
+        setAlerta('Error al actualizar figura');
+      }, 0);
     }
   };
 
@@ -160,24 +172,28 @@ const actualizarFigura = async (e) => {
     });
 
     if (!res.ok) {
-      setAlerta('Error al actualizar figura');
+      setTimeout(() => {
+        setAlerta('Error al actualizar figura');
+      }, 0);
+      // Asegura que el usuario permanezca en la pestaña de actualización y no se limpie el formulario
+      // No limpiar formulario ni cambiar tab aquí
       return;
     }
 
     setFiguras(prev => prev.map(f => f.id === idActual ? { ...f, ...data } : f));
-
-    // ✅ Mostrar la alerta primero
     setAlerta('Figura actualizada correctamente');
-
-    const tiempoAlerta = process.env.NODE_ENV === 'test' ? 200 : 3000;
     setTimeout(() => {
       limpiarFormulario();
       setAlerta('');
-    }, tiempoAlerta);
+    }, process.env.NODE_ENV === 'test' ? 200 : 3000);
 
   } catch (error) {
     console.error('Error al actualizar figura:', error);
-    setAlerta('Error al actualizar figura');
+    setTimeout(() => {
+      setAlerta('Error al actualizar figura');
+    }, 0);
+    // Asegura que el usuario permanezca en la pestaña de actualización y no se limpie el formulario
+    // No limpiar formulario ni cambiar tab aquí
   }
 };
 
@@ -191,7 +207,7 @@ const actualizarFigura = async (e) => {
       if (res.ok) {
         setFiguras(prev => prev.filter(f => f.id !== id));
         setAlerta('Figura eliminada correctamente');
-        setTimeout(() => setAlerta(''), 1000); // mantener mensaje visible para test
+        // Elimina el setTimeout aquí, la alerta se limpia por useEffect
       }
     } catch (error) {
       console.error('Error al eliminar figura:', error);
@@ -214,11 +230,11 @@ const actualizarFigura = async (e) => {
         <button onClick={() => setTab('actualizar')}>Actualizar</button>
         <button onClick={() => setTab('eliminar')}>Eliminar</button>
       </div>
-      {alerta && <div role="alert" className="alerta">{alerta}</div>}
       {/* Formulario agregar */}
       {tab === 'agregar' && (
         <div className="form-card">
           <h2>Agregar Nuevo Producto</h2>
+          {alerta && <div role="alert" className="alerta">{alerta}</div>}
           <form onSubmit={agregarFigura} data-testid="form-agregar">
             <input name="nombre" value={formulario.nombre} onChange={handleInput} placeholder="Nombre" required />
             <input name="precio" type="number" value={formulario.precio} onChange={handleInput} placeholder="Precio" required />
@@ -246,6 +262,7 @@ const actualizarFigura = async (e) => {
       {tab === 'consultar' && (
         <div className="form-card">
           <h2>Consultar Productos</h2>
+          {alerta && <div role="alert" className="alerta">{alerta}</div>}
           <input
             placeholder="Buscar por nombre"
             value={busqueda}
@@ -290,6 +307,8 @@ const actualizarFigura = async (e) => {
 {tab === 'actualizar' && idActual && (
   <div className="form-card">
     <h2>Actualizar Producto</h2>
+    {/* ALERTA SOLO EN ACTUALIZAR */}
+    {alerta && <div role="alert" className="alerta">{alerta}</div>}
     <form onSubmit={actualizarFigura}>
       <label htmlFor="nombre-actualizar">Nombre:</label>
       <input
@@ -370,6 +389,7 @@ const actualizarFigura = async (e) => {
       {tab === 'eliminar' && (
         <div className="form-card">
           <h2>Eliminar Figura</h2>
+          {alerta && <div role="alert" className="alerta">{alerta}</div>}
           <input
             placeholder="Buscar por nombre"
             value={busqueda}
