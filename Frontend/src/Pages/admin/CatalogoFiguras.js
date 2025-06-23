@@ -216,7 +216,7 @@ const actualizarFigura = async (e) => {
       }
     } catch (error) {
       console.error('Error al eliminar figura:', error);
-      setAlerta('Error al eliminar figura');
+      setAlerta('Error al obtener figuras'); // Unifica el mensaje de error
     }
   };
 
