@@ -1,4 +1,6 @@
 import { render, screen, fireEvent, waitFor, } from '@testing-library/react';
+// Forzar la variable de entorno para todos los tests
+process.env.REACT_APP_API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/figuras';
 import CatalogoFiguras from '../Pages/admin/CatalogoFiguras';
 import '@testing-library/jest-dom';
 import 'regenerator-runtime/runtime'; // Necesario para async/await en tests
