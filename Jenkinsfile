@@ -20,10 +20,8 @@ pipeline {
     stage('Backend - Dependencias y pruebas') {
       steps {
         dir('Backend') {
-          bat '''
-          pip install -r Requirements.txt
-          pytest --cov=. --cov-report=xml --cov-report=term
-          '''
+          bat 'pip install -r Requirements.txt'
+          bat 'pytest --cov=. --cov-report=xml --cov-report=term'
         }
       }
     }
@@ -31,31 +29,27 @@ pipeline {
     stage('Frontend - Dependencias y pruebas') {
       steps {
         dir('Frontend') {
-          bat '''
-          npm install
-          npm test -- --coverage --watchAll=false
-          '''
+          bat 'npm install'
+          bat 'npm test -- --coverage --watchAll=false'
         }
       }
     }
 
     stage('Levantar contenedores') {
       steps {
-        bat '''
-        docker-compose down || exit 0
-        docker-compose up --build -d
-        '''
+        bat 'docker-compose down || exit 0'
+        bat 'docker-compose up --build -d'
       }
     }
 
-stage('Subir cobertura a Codecov') {
-  steps {
-    bat 'curl -Os https://uploader.codecov.io/latest/windows/codecov.exe'
-    bat 'codecov.exe -f Backend/coverage.xml -F backend -t %CODECOV_TOKEN%'
-    bat 'codecov.exe -f Frontend/coverage/lcov.info -F frontend -t %CODECOV_TOKEN%'
+    stage('Subir cobertura a Codecov') {
+      steps {
+        bat 'curl -Os https://uploader.codecov.io/latest/windows/codecov.exe'
+        bat 'codecov.exe -f Backend/coverage.xml -F backend -t %CODECOV_TOKEN%'
+        bat 'codecov.exe -f Frontend/coverage/lcov.info -F frontend -t %CODECOV_TOKEN%'
+      }
+    }
   }
-}
-
 
   post {
     success {
