@@ -677,10 +677,11 @@ test('Filtra figuras por nombre en buscar', async () => {
 });
 test('Muestra alerta si fetch lanza excepción inesperada', async () => {
   fetch.mockRejectedValueOnce(new Error('fallo'));
+  let alerta;
   await act(async () => {
     render(<CatalogoFiguras />);
+    alerta = await screen.findByRole('alert');
   });
-  const alerta = await screen.findByRole('alert');
   expect(alerta).toHaveTextContent(/error/i);
 });
 
