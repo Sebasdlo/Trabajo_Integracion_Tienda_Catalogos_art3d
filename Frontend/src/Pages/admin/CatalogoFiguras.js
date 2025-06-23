@@ -41,7 +41,14 @@ useEffect(() => {
         throw new Error('Error de respuesta del servidor');
       }
       const data = await res.json();
-      const lista = Object.entries(data || {}).map(([id, val]) => ({ id, ...val }));
+      let lista = [];
+      if (data && Array.isArray(data.lista)) {
+        // Formato { lista: [...] }
+        lista = data.lista.map((item, idx) => ({ id: item.id || idx, ...item }));
+      } else if (data && typeof data === 'object') {
+        // Formato { id1: {...}, id2: {...} }
+        lista = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+      }
       setFiguras(lista);
     } catch (error) {
       console.error('Error al obtener figuras:', error);
@@ -220,8 +227,9 @@ const actualizarFigura = async (e) => {
     }
   };
 
-  const figurasFiltradas = figuras.filter((f) =>
-    f.nombre.toLowerCase().includes(busqueda.toLowerCase())
+  // Filtro robusto: solo figuras válidas y con nombre string
+  const figurasFiltradas = figuras.filter(
+    (f) => f && typeof f.nombre === 'string' && f.nombre.toLowerCase().includes(busqueda.toLowerCase())
   );
   return (
     <div className="catalog-container">
@@ -286,20 +294,22 @@ const actualizarFigura = async (e) => {
             </thead>
             <tbody>
               {figurasFiltradas.map((f) => (
-                <tr key={f.id}>
-                  <td>{f.nombre}</td>
-                  <td>
-                    {f.imagenUrl ? (
-                      <img src={f.imagenUrl} loading="lazy" className="img-preview" alt={f.nombre} />
-                    ) : 'Sin imagen'}
-                  </td>
-                  <td>{f.categoria}</td>
-                  <td>{f.subcategoria}</td>
-                  <td>{f.precio}</td>
-                  <td>
-                    <button onClick={() => cargarParaActualizar(f.id)}>Editar</button>
-                  </td>
-                </tr>
+                f && typeof f.nombre === 'string' ? (
+                  <tr key={f.id}>
+                    <td>{f.nombre}</td>
+                    <td>
+                      {f.imagenUrl ? (
+                        <img src={f.imagenUrl} loading="lazy" className="img-preview" alt={f.nombre} />
+                      ) : 'Sin imagen'}
+                    </td>
+                    <td>{f.categoria}</td>
+                    <td>{f.subcategoria}</td>
+                    <td>{f.precio}</td>
+                    <td>
+                      <button onClick={() => cargarParaActualizar(f.id)}>Editar</button>
+                    </td>
+                  </tr>
+                ) : null
               ))}
               {figurasFiltradas.length === 0 && (
                 <tr><td colSpan="3">No se encontraron figuras</td></tr>
@@ -413,20 +423,22 @@ const actualizarFigura = async (e) => {
             </thead>
             <tbody>
               {figurasFiltradas.map((f) => (
-                <tr key={f.id}>
-                  <td>{f.nombre}</td>
-                  <td>
-                    {f.imagenUrl ? (
-                      <img src={f.imagenUrl} loading="lazy" className="img-preview" alt={f.nombre} />
-                    ) : 'Sin imagen'}
-                  </td>
-                  <td>{f.categoria}</td>
-                  <td>{f.subcategoria}</td>
-                  <td>{f.precio}</td>
-                  <td>
-                    <button onClick={() => eliminarFigura(f.id)} className="btn-danger">Eliminar</button>
-                  </td>
-                </tr>
+                f && typeof f.nombre === 'string' ? (
+                  <tr key={f.id}>
+                    <td>{f.nombre}</td>
+                    <td>
+                      {f.imagenUrl ? (
+                        <img src={f.imagenUrl} loading="lazy" className="img-preview" alt={f.nombre} />
+                      ) : 'Sin imagen'}
+                    </td>
+                    <td>{f.categoria}</td>
+                    <td>{f.subcategoria}</td>
+                    <td>{f.precio}</td>
+                    <td>
+                      <button onClick={() => eliminarFigura(f.id)} className="btn-danger">Eliminar</button>
+                    </td>
+                  </tr>
+                ) : null
               ))}
               {figurasFiltradas.length === 0 && (
                 <tr><td colSpan="3">No se encontraron figuras</td></tr>
