@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1750669227340" clover="3.2.0">
+  <project timestamp="1750669227341" name="All files">
+    <metrics statements="185" coveredstatements="153" conditionals="70" coveredconditionals="53" methods="73" coveredmethods="65" elements="328" coveredelements="271" complexity="0" loc="185" ncloc="185" packages="10" files="11" classes="11"/>
+    <package name="src">
+      <metrics statements="5" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+      <file name="App.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\App.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="37" count="4" type="stmt"/>
+      </file>
+      <file name="index.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\index.js">
+        <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.Pages.Design">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="Design.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\Pages\Design\Design.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="4" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.Pages.Home">
+      <metrics statements="17" coveredstatements="17" conditionals="5" coveredconditionals="4" methods="5" coveredmethods="5"/>
+      <file name="Home.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\Pages\Home\Home.js">
+        <metrics statements="17" coveredstatements="17" conditionals="5" coveredconditionals="4" methods="5" coveredmethods="5"/>
+        <line num="9" count="4" type="stmt"/>
+        <line num="10" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="33" count="3" type="stmt"/>
+        <line num="36" count="4" type="stmt"/>
+        <line num="49" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.Pages.Products">
+      <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="Products.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\Pages\Products\Products.js">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
+    </package>
+    <package name="src.Pages.admin">
+      <metrics statements="128" coveredstatements="98" conditionals="55" coveredconditionals="41" methods="47" coveredmethods="39"/>
+      <file name="CatalogoFiguras.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\Pages\admin\CatalogoFiguras.js">
+        <metrics statements="128" coveredstatements="98" conditionals="55" coveredconditionals="41" methods="47" coveredmethods="39"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="95" type="stmt"/>
+        <line num="7" count="94" type="stmt"/>
+        <line num="8" count="94" type="stmt"/>
+        <line num="9" count="94" type="stmt"/>
+        <line num="10" count="94" type="stmt"/>
+        <line num="11" count="94" type="stmt"/>
+        <line num="12" count="94" type="stmt"/>
+        <line num="13" count="94" type="stmt"/>
+        <line num="16" count="94" type="stmt"/>
+        <line num="17" count="28" type="stmt"/>
+        <line num="21" count="94" type="stmt"/>
+        <line num="22" count="37" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="9" type="stmt"/>
+        <line num="24" count="9" type="stmt"/>
+        <line num="29" count="94" type="stmt"/>
+        <line num="31" count="94" type="stmt"/>
+        <line num="32" count="28" type="stmt"/>
+        <line num="33" count="28" type="stmt"/>
+        <line num="34" count="22" type="stmt"/>
+        <line num="35" count="23" type="cond" truecount="1" falsecount="1"/>
+        <line num="36" count="22" type="stmt"/>
+        <line num="38" count="4" type="stmt"/>
+        <line num="39" count="4" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="44" count="94" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="60" count="94" type="stmt"/>
+        <line num="65" count="94" type="stmt"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="69" count="94" type="stmt"/>
+        <line num="70" count="7" type="stmt"/>
+        <line num="71" count="7" type="stmt"/>
+        <line num="74" count="94" type="stmt"/>
+        <line num="75" count="2" type="stmt"/>
+        <line num="76" count="2" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="78" count="2" type="stmt"/>
+        <line num="79" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="80" count="2" type="stmt"/>
+        <line num="84" count="94" type="stmt"/>
+        <line num="85" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="93" count="94" type="stmt"/>
+        <line num="94" count="10" type="stmt"/>
+        <line num="95" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="96" count="8" type="stmt"/>
+        <line num="97" count="8" type="stmt"/>
+        <line num="98" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="99" count="8" type="stmt"/>
+        <line num="100" count="8" type="stmt"/>
+        <line num="104" count="94" type="stmt"/>
+        <line num="105" count="2" type="stmt"/>
+        <line num="106" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="108" count="0" type="stmt"/>
+        <line num="109" count="0" type="stmt"/>
+        <line num="110" count="0" type="stmt"/>
+        <line num="116" count="0" type="stmt"/>
+        <line num="122" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="123" count="0" type="stmt"/>
+        <line num="124" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="127" count="0" type="stmt"/>
+        <line num="128" count="0" type="stmt"/>
+        <line num="130" count="0" type="stmt"/>
+        <line num="133" count="0" type="stmt"/>
+        <line num="134" count="0" type="stmt"/>
+        <line num="138" count="94" type="stmt"/>
+        <line num="139" count="2" type="stmt"/>
+        <line num="141" count="2" type="stmt"/>
+        <line num="142" count="2" type="stmt"/>
+        <line num="143" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="144" count="0" type="stmt"/>
+        <line num="147" count="2" type="stmt"/>
+        <line num="153" count="2" type="stmt"/>
+        <line num="159" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="160" count="1" type="stmt"/>
+        <line num="161" count="1" type="stmt"/>
+        <line num="164" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="167" count="1" type="stmt"/>
+        <line num="169" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="170" count="1" type="stmt"/>
+        <line num="171" count="1" type="stmt"/>
+        <line num="172" count="1" type="stmt"/>
+        <line num="176" count="0" type="stmt"/>
+        <line num="177" count="0" type="stmt"/>
+        <line num="182" count="94" type="stmt"/>
+        <line num="183" count="1" type="stmt"/>
+        <line num="184" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="186" count="1" type="stmt"/>
+        <line num="187" count="1" type="stmt"/>
+        <line num="188" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="189" count="1" type="stmt"/>
+        <line num="190" count="1" type="stmt"/>
+        <line num="191" count="1" type="stmt"/>
+        <line num="194" count="0" type="stmt"/>
+        <line num="195" count="0" type="stmt"/>
+        <line num="199" count="94" type="stmt"/>
+        <line num="200" count="38" type="stmt"/>
+        <line num="202" count="94" type="stmt"/>
+        <line num="209" count="3" type="stmt"/>
+        <line num="210" count="14" type="stmt"/>
+        <line num="211" count="4" type="stmt"/>
+        <line num="212" count="3" type="stmt"/>
+        <line num="222" count="2" type="stmt"/>
+        <line num="228" count="0" type="stmt"/>
+        <line num="231" count="12" type="stmt"/>
+        <line num="249" count="2" type="stmt"/>
+        <line num="264" count="16" type="stmt"/>
+        <line num="275" count="10" type="stmt"/>
+        <line num="318" count="1" type="stmt"/>
+        <line num="319" count="1" type="stmt"/>
+        <line num="320" count="1" type="stmt"/>
+        <line num="336" count="1" type="stmt"/>
+        <line num="337" count="1" type="stmt"/>
+        <line num="343" count="39" type="stmt"/>
+        <line num="359" count="1" type="stmt"/>
+        <line num="360" count="1" type="stmt"/>
+        <line num="373" count="0" type="stmt"/>
+        <line num="388" count="2" type="stmt"/>
+        <line num="399" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.ContactBanner">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="ContactBanner.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\components\ContactBanner\ContactBanner.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="5" count="5" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.HeroCarrusel">
+      <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
+      <file name="HeroCarrusel.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\components\HeroCarrusel\HeroCarrusel.js">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="12" count="8" type="stmt"/>
+        <line num="13" count="8" type="stmt"/>
+        <line num="16" count="8" type="stmt"/>
+        <line num="17" count="5" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="24" count="8" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.Navbar">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="Navbar.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\components\Navbar\Navbar.js">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="5" count="9" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.ProductCard">
+      <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+      <file name="ProductCard.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\components\ProductCard\ProductCard.js">
+        <metrics statements="2" coveredstatements="2" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="5" count="20" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components.ProductCarrusel">
+      <metrics statements="21" coveredstatements="21" conditionals="8" coveredconditionals="7" methods="7" coveredmethods="7"/>
+      <file name="ProductCarrusel.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\components\ProductCarrusel\ProductCarrusel.js">
+        <metrics statements="21" coveredstatements="21" conditionals="8" coveredconditionals="7" methods="7" coveredmethods="7"/>
+        <line num="7" count="9" type="stmt"/>
+        <line num="8" count="9" type="stmt"/>
+        <line num="9" count="9" type="stmt"/>
+        <line num="12" count="9" type="stmt"/>
+        <line num="13" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="20" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="28" count="2" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="33" count="9" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="41" count="18" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

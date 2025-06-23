@@ -12,10 +12,19 @@ const CatalogoFiguras = () => {
   const [busqueda, setBusqueda] = useState('');
   const [subcategoria, setSubcategoria] = useState('');
 
+// 1. Para cargar las figuras al montar el componente
+useEffect(() => {
+  obtenerFiguras();
+}, []);
 
-  useEffect(() => {
-    obtenerFiguras();
-  }, []);
+// 2. Para limpiar la alerta después de 3 segundos
+useEffect(() => {
+  if (alerta) {
+    const timer = setTimeout(() => setAlerta(''), 3000);
+    return () => clearTimeout(timer);
+  }
+}, [alerta]);
+
   
   const API_URL = process.env.REACT_APP_API_URL;
 
@@ -32,28 +41,26 @@ const CatalogoFiguras = () => {
     }
   };
 
-const subirImagenACloudinary = async (archivo) => {
-  const imagenComprimida = await comprimirImagen(archivo);  // NUEVO
+  const subirImagenACloudinary = async (archivo) => {
+    const imagenComprimida = await comprimirImagen(archivo);
+    const data = new FormData();
+    data.append('file', imagenComprimida);
+    data.append('upload_preset', 'img_basedatos');
+    data.append('cloud_name', 'do4atrqrj');
 
-  const data = new FormData();
-  data.append('file', imagenComprimida); // en lugar del archivo sin comprimir
-  data.append('upload_preset', 'img_basedatos');
-  data.append('cloud_name', 'do4atrqrj');
+    const res = await fetch('https://api.cloudinary.com/v1_1/do4atrqrj/image/upload', {
+      method: 'POST',
+      body: data
+    });
 
-  const res = await fetch('https://api.cloudinary.com/v1_1/do4atrqrj/image/upload', {
-    method: 'POST',
-    body: data
-  });
+    const resultado = await res.json();
+    return resultado.secure_url;
+  };
 
-  const resultado = await res.json();
-  return resultado.secure_url;
-};
-
-const subcategoriasPorCategoria = {
-  Filamento: ['Juguetes', 'Tazas', 'Figuras'],
-  Resina: ['Decoraciones', 'Llaveros', 'Miniaturas']
-};
-
+  const subcategoriasPorCategoria = {
+    Filamento: ['Juguetes', 'Tazas', 'Figuras'],
+    Resina: ['Decoraciones', 'Llaveros', 'Miniaturas']
+  };
 
   const handleImagen = (e) => {
     setImagen(e.target.files[0]);
@@ -64,64 +71,69 @@ const subcategoriasPorCategoria = {
     setFormulario((prev) => ({ ...prev, [name]: value }));
   };
 
-const limpiarFormulario = () => {
-  setFormulario({ nombre: '', precio: '', categoria: '', estado: true });
-  setSubcategoria('');
-  setImagen(null);
-  setIdActual('');
-};
+  const limpiarFormulario = () => {
+    setFormulario({ nombre: '', precio: '', categoria: '', subcategoria: '', estado: true });
+    setSubcategoria('');
+    setImagen(null);
+    setIdActual('');
+    const tiempoAlerta = process.env.NODE_ENV === 'test' ? 100 : 1000;
+setTimeout(() => setAlerta(''), tiempoAlerta);
 
-const comprimirImagen = async (file) => {
-  const opciones = {
-    maxSizeMB: 0.5,
-    maxWidthOrHeight: 800,
-    useWebWorker: true
   };
-  return await imageCompression(file, opciones);
-}
+
+  const comprimirImagen = async (file) => {
+    const opciones = {
+      maxSizeMB: 0.5,
+      maxWidthOrHeight: 800,
+      useWebWorker: true
+    };
+    return await imageCompression(file, opciones);
+  };
 
   const cargarParaActualizar = async (id) => {
     const res = await fetch(`${API_URL}/${id}`);
     if (res.ok) {
       const data = await res.json();
       setFormulario(data);
+      setSubcategoria(data.subcategoria || '');
       setIdActual(id);
       setTab('actualizar');
     }
   };
 
-const agregarFigura = async (e) => {
-  e.preventDefault();
-  if (!imagen) return setAlerta('Selecciona una imagen');
+  const agregarFigura = async (e) => {
+    e.preventDefault();
+    if (!imagen) return setAlerta('Selecciona una imagen');
 
-  try {
-    const imagenUrl = await subirImagenACloudinary(imagen);
-    const data = {
-      ...formulario,
-      imagenUrl,
-      subcategoria,
-    };
+    try {
+      const imagenUrl = await subirImagenACloudinary(imagen);
+      const data = {
+        ...formulario,
+        imagenUrl,
+        subcategoria,
+      };
 
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
-    if (res.ok) {
-      const { id } = await res.json();
-      if (id) {
-        setFiguras(prev => [...prev, { id, ...data }]);
+      if (res.ok) {
+        const { id } = await res.json();
+        if (id) {
+          setFiguras(prev => [...prev, { id, ...data }]);
+        }
+        setAlerta('Figura agregada correctamente');
+        limpiarFormulario();
+      } else {
+        setAlerta('Error al agregar figura');
       }
-      setAlerta('Figura agregada correctamente');
-      limpiarFormulario();
+    } catch (error) {
+      console.error('Error al agregar figura:', error);
+      setAlerta('Error al agregar figura');
     }
-  } catch (error) {
-    console.error('Error al agregar figura:', error);
-    setAlerta('Error al agregar figura');
-  }
-};
-
+  };
 
 const actualizarFigura = async (e) => {
   e.preventDefault();
@@ -144,11 +156,22 @@ const actualizarFigura = async (e) => {
       body: JSON.stringify(data)
     });
 
-    if (res.ok) {
-      setFiguras(prev => prev.map(f => f.id === idActual ? { ...f, ...data } : f));
-      setAlerta('Figura actualizada correctamente');
-      limpiarFormulario();
+    if (!res.ok) {
+      setAlerta('Error al actualizar figura');
+      return;
     }
+
+    setFiguras(prev => prev.map(f => f.id === idActual ? { ...f, ...data } : f));
+
+    // ✅ Mostrar la alerta primero
+    setAlerta('Figura actualizada correctamente');
+
+    const tiempoAlerta = process.env.NODE_ENV === 'test' ? 200 : 3000;
+    setTimeout(() => {
+      limpiarFormulario();
+      setAlerta('');
+    }, tiempoAlerta);
+
   } catch (error) {
     console.error('Error al actualizar figura:', error);
     setAlerta('Error al actualizar figura');
@@ -165,6 +188,7 @@ const actualizarFigura = async (e) => {
       if (res.ok) {
         setFiguras(prev => prev.filter(f => f.id !== id));
         setAlerta('Figura eliminada correctamente');
+        setTimeout(() => setAlerta(''), 1000); // mantener mensaje visible para test
       }
     } catch (error) {
       console.error('Error al eliminar figura:', error);
@@ -175,106 +199,90 @@ const actualizarFigura = async (e) => {
   const figurasFiltradas = figuras.filter((f) =>
     f.nombre.toLowerCase().includes(busqueda.toLowerCase())
   );
-
   return (
-<div className="catalog-container">
-  <h1>Catálogo de Figuras - ImaginArte 3D</h1>
+    <div className="catalog-container">
 
-  <div className="tab-buttons">
-    <button onClick={() => setTab('agregar')}>Agregar</button>
-    <button onClick={() => setTab('consultar')}>Consultar</button>
-    <button onClick={() => setTab('actualizar')}>Actualizar</button>
-    <button onClick={() => setTab('eliminar')}>Eliminar</button>
-  </div>
 
-  {alerta && <div className="alert alert-success">{alerta}</div>}
+      <h1>Catálogo de Figuras - ImaginArte 3D</h1>
 
-  {tab === 'agregar' && (
-    <div className="form-card">
-      <h2>Agregar Nuevo Producto</h2>
-      <form onSubmit={agregarFigura}>
-        <input name="nombre" value={formulario.nombre} onChange={handleInput} placeholder="Nombre" required />
-        <input name="precio" type="number" value={formulario.precio} onChange={handleInput} placeholder="Precio" required />
-        <select
-          id="categoria"
-          name="categoria"
-          value={formulario.categoria}
-          onChange={(e) => {
-            handleInput(e);
-            setSubcategoria('');
-          }}
-          required
-        >
-          <option value="">Seleccione categoría</option>
-          <option value="Filamento">Filamento</option>
-          <option value="Resina">Resina</option>
-        </select>
+      <div className="tab-buttons">
+        <button onClick={() => setTab('agregar')}>Agregar</button>
+        <button onClick={() => setTab('consultar')}>Consultar</button>
+        <button onClick={() => setTab('actualizar')}>Actualizar</button>
+        <button onClick={() => setTab('eliminar')}>Eliminar</button>
+      </div>
+      {alerta && <div role="alert" className="alerta">{alerta}</div>}
+      {/* Formulario agregar */}
+      {tab === 'agregar' && (
+        <div className="form-card">
+          <h2>Agregar Nuevo Producto</h2>
+          <form onSubmit={agregarFigura} data-testid="form-agregar">
+            <input name="nombre" value={formulario.nombre} onChange={handleInput} placeholder="Nombre" required />
+            <input name="precio" type="number" value={formulario.precio} onChange={handleInput} placeholder="Precio" required />
+            <select id="categoria" name="categoria" value={formulario.categoria} onChange={(e) => { handleInput(e); setSubcategoria(''); setFormulario((prev) => ({ ...prev, subcategoria: '' })); }} required aria-label="Categoría">
+              <option value="">Seleccione categoría</option>
+              <option value="Filamento">Filamento</option>
+              <option value="Resina">Resina</option>
+            </select>
+            {formulario.categoria && (
+              <select id="subcategoria" value={subcategoria} onChange={(e) => { setSubcategoria(e.target.value); setFormulario((prev) => ({ ...prev, subcategoria: e.target.value })); }} required aria-label="Subcategoría">
+                <option value="">Seleccione subcategoría</option>
+                {subcategoriasPorCategoria[formulario.categoria].map((sub) => (
+                  <option key={sub} value={sub}>{sub}</option>
+                ))}
+              </select>
+            )}
+            <input type="file" accept="image/*" onChange={handleImagen} aria-label="Imagen" />
+            {imagen && <p>Imagen seleccionada: {imagen.name}</p>}
+            <button className="btn-success" type="submit">Guardar</button>
+          </form>
+        </div>
+      )}
 
-        {formulario.categoria && (
-          <select
-            id="subcategoria"
-            value={subcategoria}
-            onChange={(e) => setSubcategoria(e.target.value)}
-            required
-          >
-            <option value="">Seleccione subcategoría</option>
-            {subcategoriasPorCategoria[formulario.categoria].map((sub) => (
-              <option key={sub} value={sub}>{sub}</option>
-            ))}
-          </select>
-        )}
 
-        <input type="file" accept="image/*" onChange={handleImagen} />
-        {imagen && <p>Imagen seleccionada: {imagen.name}</p>}
-
-        <button className="btn-success" type="submit">Guardar</button>
-      </form>
-    </div>
-  )}
-
-{tab === 'consultar' && (
-  <div className="form-card">
-    <h2>Consultar Productos</h2>
-    <input
-      placeholder="Buscar por nombre"
-      value={busqueda}
-      onChange={(e) => setBusqueda(e.target.value)}
-    />
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Imagen</th>
-          <th>Categoría</th>
-          <th>Subcategoría</th>
-          <th>Precio</th>
-          <th>Actualizar</th>
-        </tr>
-      </thead>
-      <tbody>
-        {figurasFiltradas.map((f) => (
-          <tr key={f.id}>
-            <td>{f.nombre}</td>
-            <td>
-              {f.imagenUrl ? (
-                <img src={f.imagenUrl} loading="lazy" className="img-preview" alt={f.nombre} />
-              ) : 'Sin imagen'}
-            </td>
-            <td>{f.categoria}</td>
-            <td>{f.subcategoria}</td>
-            <td>{f.precio}</td>
-            <td>
-              <button onClick={() => cargarParaActualizar(f.id)}>Editar</button>
-            </td>
-          </tr>
-        ))}
-        {figurasFiltradas.length === 0 && (
-          <tr><td colSpan="3">No se encontraron figuras</td></tr>
-        )}
-      </tbody>
-    </table>
-  </div>
-)}
+      {tab === 'consultar' && (
+        <div className="form-card">
+          <h2>Consultar Productos</h2>
+          <input
+            placeholder="Buscar por nombre"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+          />
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Imagen</th>
+                <th>Categoría</th>
+                <th>Subcategoría</th>
+                <th>Precio</th>
+                <th>Actualizar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {figurasFiltradas.map((f) => (
+                <tr key={f.id}>
+                  <td>{f.nombre}</td>
+                  <td>
+                    {f.imagenUrl ? (
+                      <img src={f.imagenUrl} loading="lazy" className="img-preview" alt={f.nombre} />
+                    ) : 'Sin imagen'}
+                  </td>
+                  <td>{f.categoria}</td>
+                  <td>{f.subcategoria}</td>
+                  <td>{f.precio}</td>
+                  <td>
+                    <button onClick={() => cargarParaActualizar(f.id)}>Editar</button>
+                  </td>
+                </tr>
+              ))}
+              {figurasFiltradas.length === 0 && (
+                <tr><td colSpan="3">No se encontraron figuras</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
 
 {tab === 'actualizar' && idActual && (
   <div className="form-card">
@@ -309,6 +317,7 @@ const actualizarFigura = async (e) => {
         onChange={(e) => {
           handleInput(e);
           setSubcategoria('');
+          setFormulario((prev) => ({ ...prev, subcategoria: '' }));
         }}
         required
       >
@@ -323,7 +332,10 @@ const actualizarFigura = async (e) => {
           <select
             id="subcategoria-actualizar"
             value={subcategoria}
-            onChange={(e) => setSubcategoria(e.target.value)}
+            onChange={(e) => {
+              setSubcategoria(e.target.value);
+              setFormulario((prev) => ({ ...prev, subcategoria: e.target.value }));
+            }}
             required
           >
             <option value="">Seleccione subcategoría</option>
@@ -335,62 +347,67 @@ const actualizarFigura = async (e) => {
       )}
 
       <label htmlFor="imagen-actualizar">Imagen (opcional):</label>
-      <input type="file" accept="image/*" onChange={handleImagen} />
+      <input id="imagen-actualizar" accept="image/*" type="file" onChange={handleImagen} />
+
 
       {formulario.imagenUrl && (
         <img src={formulario.imagenUrl} loading="lazy" className="img-preview" alt="prev" />
       )}
 
       <button type="submit" className="btn-success">Actualizar</button>
+      <button type="button" onClick={() => {
+        limpiarFormulario();
+        setTab('agregar');
+      }}>Cancelar edición</button>
     </form>
   </div>
 )}
 
 
-  {tab === 'eliminar' && (
-    <div className="form-card">
-      <h2>Eliminar Figura</h2>
-      <input
-        placeholder="Buscar por nombre"
-        value={busqueda}
-        onChange={(e) => setBusqueda(e.target.value)}
-      />
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Imagen</th>
-            <th>Categoría</th>
-            <th>Subcategoría</th>
-            <th>Precio</th>
-            <th>Eliminar</th>
-          </tr>
-        </thead>
-        <tbody>
-      {figurasFiltradas.map((f) => (
-          <tr key={f.id}>
-            <td>{f.nombre}</td>
-            <td>
-              {f.imagenUrl ? (
-                <img src={f.imagenUrl} loading="lazy" className="img-preview" alt={f.nombre} />
-              ) : 'Sin imagen'}
-            </td>
-            <td>{f.categoria}</td>
-            <td>{f.subcategoria}</td>
-            <td>{f.precio}</td>
-            <td>
-              <button onClick={() => eliminarFigura(f.id)} className="btn-danger">Eliminar</button>
-            </td>
-          </tr>
-        ))}
-        {figurasFiltradas.length === 0 && (
-          <tr><td colSpan="3">No se encontraron figuras</td></tr>
-        )}
-      </tbody>
-    </table>
-  </div>
-)}
-</div>
+      {tab === 'eliminar' && (
+        <div className="form-card">
+          <h2>Eliminar Figura</h2>
+          <input
+            placeholder="Buscar por nombre"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+          />
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Imagen</th>
+                <th>Categoría</th>
+                <th>Subcategoría</th>
+                <th>Precio</th>
+                <th>Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {figurasFiltradas.map((f) => (
+                <tr key={f.id}>
+                  <td>{f.nombre}</td>
+                  <td>
+                    {f.imagenUrl ? (
+                      <img src={f.imagenUrl} loading="lazy" className="img-preview" alt={f.nombre} />
+                    ) : 'Sin imagen'}
+                  </td>
+                  <td>{f.categoria}</td>
+                  <td>{f.subcategoria}</td>
+                  <td>{f.precio}</td>
+                  <td>
+                    <button onClick={() => eliminarFigura(f.id)} className="btn-danger">Eliminar</button>
+                  </td>
+                </tr>
+              ))}
+              {figurasFiltradas.length === 0 && (
+                <tr><td colSpan="3">No se encontraron figuras</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 };
 

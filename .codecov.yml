@@ -1,0 +1,32 @@
+coverage:
+  precision: 2
+  round: down
+  range: "0.0...1.0"
+
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 5%
+    patch:
+      default:
+        target: 80%
+        threshold: 5%
+
+parsers:
+  xml:
+    - pattern: "Backend/coverage.xml"
+  lcov:
+    - pattern: "Frontend/coverage/lcov.info"
+
+flags:
+  backend:
+    paths:
+      - Backend/
+  frontend:
+    paths:
+      - Frontend/
+
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
