@@ -47,17 +47,18 @@ pipeline {
         '''
       }
     }
-    stage('Subir cobertura a Codecov') {
-      steps {
-        powershell '''
-        Invoke-WebRequest -Uri "https://uploader.codecov.io/latest/windows/codecov.ps1" -OutFile "codecov.ps1"
-        powershell -ExecutionPolicy Bypass -File codecov.ps1 `
-            -f "Backend/coverage.xml" -F backend -t "$env:CODECOV_TOKEN"
-        powershell -ExecutionPolicy Bypass -File codecov.ps1 `
-            -f "Frontend/coverage/lcov.info" -F frontend -t "$env:CODECOV_TOKEN"
-        '''
-      }
+  stage('Subir cobertura a Codecov') {
+    steps {
+      powershell '''
+        # Descarga el uploader nativo de Codecov
+        Invoke-WebRequest -Uri "https://cli.codecov.io/latest/windows/codecov.exe" -OutFile "codecov.exe"
+        
+        # Ejecuta el uploader sobre los reportes generados
+        .\\codecov.exe -f "Backend/coverage.xml" -F backend -t "$env:CODECOV_TOKEN"
+        .\\codecov.exe -f "Frontend/coverage/lcov.info" -F frontend -t "$env:CODECOV_TOKEN"
+      '''
     }
+  }
   post {
     success {
       echo '✅ CI/CD completado correctamente'
