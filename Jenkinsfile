@@ -48,16 +48,14 @@ pipeline {
       }
     }
 
-    stage('Subir cobertura a Codecov') {
-      steps {
-        bat '''
-        curl -s https://codecov.io/bash -o codecov.sh
-        bash codecov.sh -f Backend/coverage.xml -F backend -t %CODECOV_TOKEN%
-        bash codecov.sh -f Frontend/coverage/lcov.info -F frontend -t %CODECOV_TOKEN%
-        '''
-      }
-    }
+stage('Subir cobertura a Codecov') {
+  steps {
+    bat 'curl -Os https://uploader.codecov.io/latest/windows/codecov.exe'
+    bat 'codecov.exe -f Backend/coverage.xml -F backend -t %CODECOV_TOKEN%'
+    bat 'codecov.exe -f Frontend/coverage/lcov.info -F frontend -t %CODECOV_TOKEN%'
   }
+}
+
 
   post {
     success {

@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS 
+from datetime import datetime
 
 from firebase_service import FirebaseService
 
@@ -16,6 +17,8 @@ FIGURA_NO_ENCONTRADA = 'Figura no encontrada'
 def home():
     return "API de catálogo 3D funcionando correctamente."
 
+from datetime import datetime
+
 @app.route('/figuras', methods=['POST'])
 def create_figura():
     try:
@@ -25,10 +28,15 @@ def create_figura():
         if not all(field in data for field in required_fields):
             return jsonify({'error': 'Falta algun campo requerido'}), 400
 
+        # 👇 Agrega la fecha de creación si no viene desde el frontend
+        if 'createdAt' not in data:
+            data['createdAt'] = datetime.now(datetime.timezone.utc).isoformat()
+
         figura_id = firebase_service.create_figura(data)
         return jsonify({'id': figura_id}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 
 @app.route('/figuras/<figura_id>', methods=['GET'])

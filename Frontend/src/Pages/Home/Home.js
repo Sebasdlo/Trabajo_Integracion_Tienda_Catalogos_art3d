@@ -9,23 +9,33 @@ function Home() {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     const obtenerProductos = async () => {
       try {
-        const API_URL = process.env.REACT_APP_API_URL; // Ajusta tu API URL
+        const API_URL = process.env.REACT_APP_API_URL;
         const res = await fetch(API_URL);
         const data = await res.json();
+
         const lista = Object.entries(data || {}).map(([id, val]) => ({
           id,
-          ...val,
-          imagen: val.imagenUrl,
-          precio: Number(val.precio),
+          nombre: val.nombre || 'Sin nombre',
+          imagen: val.imagenUrl || '',
+          precio: Number(val.precio || 0),
+          categoria: val.categoria || '',
+          subcategoria: val.subcategoria || '',
+          createdAt: val.createdAt || '1970-01-01T00:00:00Z',
         }));
-        setProductos(lista);
-        setLoading(false);
+
+        const ordenados = lista.toSorted(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+        setProductos(ordenados);
       } catch (error) {
         console.error('Error al obtener productos:', error);
         setProductos([]);
+      } finally {
         setLoading(false);
       }
     };
@@ -40,21 +50,16 @@ function Home() {
       </section>
 
       {!loading && productos.length > 0 && (
-        <ProductCarrusel productos={productos.slice(-6)} titulo="Novedades" />
+        <ProductCarrusel productos={productos.slice(0, 6)} titulo="Novedades" />
       )}
+
       <section className="destacados">
         <h2>Artículos Recientes</h2>
         <div className="grid">
-          {productos.map((prod) => (
+          {productos.slice(0, 10).map((prod) => (
             <ProductCard
               key={prod.id}
-              producto={{
-                imagen: prod.imagen,
-                nombre: prod.nombre,
-                precio: prod.precio,
-                categoria: prod.categoria,
-                subcategoria: prod.subcategoria,
-              }}
+              producto={prod}
             />
           ))}
         </div>

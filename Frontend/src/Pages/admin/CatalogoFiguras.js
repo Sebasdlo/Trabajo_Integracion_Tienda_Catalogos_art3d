@@ -12,22 +12,19 @@ const CatalogoFiguras = () => {
   const [busqueda, setBusqueda] = useState('');
   const [subcategoria, setSubcategoria] = useState('');
 
-// 1. Para cargar las figuras al montar el componente
-useEffect(() => {
-  obtenerFiguras();
-}, []);
-
-// 2. Para limpiar la alerta después de 3 segundos (o 2000ms en test)
-useEffect(() => {
-  if (alerta) {
-    const tiempo = process.env.NODE_ENV === 'test' ? 2000 : 3000;
-    const timer = setTimeout(() => setAlerta(''), tiempo);
-    return () => clearTimeout(timer);
-  }
-}, [alerta]);
-
-  
   const API_URL = process.env.REACT_APP_API_URL;
+
+  useEffect(() => {
+    obtenerFiguras();
+  }, []);
+
+  useEffect(() => {
+    if (alerta) {
+      const tiempo = process.env.NODE_ENV === 'test' ? 2000 : 3000;
+      const timer = setTimeout(() => setAlerta(''), tiempo);
+      return () => clearTimeout(timer);
+    }
+  }, [alerta]);
 
   const obtenerFiguras = async () => {
     if (!API_URL) {
@@ -45,13 +42,14 @@ useEffect(() => {
       const data = await res.json();
       let lista = [];
       if (data && Array.isArray(data.lista)) {
-        // Formato { lista: [...] }
         lista = data.lista.map((item, idx) => ({ id: item.id || idx, ...item }));
       } else if (data && typeof data === 'object') {
-        // Formato { id1: {...}, id2: {...} }
         lista = Object.entries(data).map(([id, val]) => ({ id, ...val }));
       }
-      setFiguras(lista);
+
+      setFiguras(
+        lista.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+      );
     } catch (error) {
       console.error('Error al obtener figuras:', error);
       setTimeout(() => {
@@ -96,7 +94,6 @@ useEffect(() => {
     setSubcategoria('');
     setImagen(null);
     setIdActual('');
-    // Elimina el setTimeout aquí, la alerta se limpia por useEffect
   };
 
   const comprimirImagen = async (file) => {
@@ -140,6 +137,7 @@ useEffect(() => {
         ...formulario,
         imagenUrl,
         subcategoria,
+        createdAt: new Date().toISOString(),
       };
 
       const res = await fetch(API_URL, {
@@ -151,7 +149,7 @@ useEffect(() => {
       if (res.ok) {
         const { id } = await res.json();
         if (id) {
-          setFiguras(prev => [...prev, { id, ...data }]);
+          setFiguras(prev => [{ id, ...data }, ...prev]); // Insertar al inicio
         }
         setAlerta('Figura agregada correctamente');
         limpiarFormulario();
@@ -164,53 +162,53 @@ useEffect(() => {
     }
   };
 
-const actualizarFigura = async (e) => {
-  e.preventDefault();
+  const actualizarFigura = async (e) => {
+    e.preventDefault();
 
-  try {
-    let imagenUrl = formulario.imagenUrl;
-    if (imagen) {
-      imagenUrl = await subirImagenACloudinary(imagen);
-    }
+    try {
+      let imagenUrl = formulario.imagenUrl;
+      if (imagen) {
+        imagenUrl = await subirImagenACloudinary(imagen);
+      }
 
-    const data = {
-      ...formulario,
-      imagenUrl,
-      subcategoria,
-    };
+      const data = {
+        ...formulario,
+        imagenUrl,
+        subcategoria,
+      };
 
-    const res = await fetch(`${API_URL}/${idActual}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
+      const res = await fetch(`${API_URL}/${idActual}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
-    if (!res.ok) {
+      if (!res.ok) {
+        setTimeout(() => {
+          setAlerta('Error al actualizar figura');
+        }, 0);
+        return;
+      }
+
+      // Mover figura actualizada al inicio
+      setFiguras(prev => {
+        const actualizada = { ...data, id: idActual };
+        const otras = prev.filter(f => f.id !== idActual);
+        return [actualizada, ...otras];
+      });
+
+      setAlerta('Figura actualizada correctamente');
+      setTimeout(() => {
+        limpiarFormulario();
+        setAlerta('');
+      }, process.env.NODE_ENV === 'test' ? 200 : 3000);
+    } catch (error) {
+      console.error('Error al actualizar figura:', error);
       setTimeout(() => {
         setAlerta('Error al actualizar figura');
       }, 0);
-      // Asegura que el usuario permanezca en la pestaña de actualización y no se limpie el formulario
-      // No limpiar formulario ni cambiar tab aquí
-      return;
     }
-
-    setFiguras(prev => prev.map(f => f.id === idActual ? { ...f, ...data } : f));
-    setAlerta('Figura actualizada correctamente');
-    setTimeout(() => {
-      limpiarFormulario();
-      setAlerta('');
-    }, process.env.NODE_ENV === 'test' ? 200 : 3000);
-
-  } catch (error) {
-    console.error('Error al actualizar figura:', error);
-    setTimeout(() => {
-      setAlerta('Error al actualizar figura');
-    }, 0);
-    // Asegura que el usuario permanezca en la pestaña de actualización y no se limpie el formulario
-    // No limpiar formulario ni cambiar tab aquí
-  }
-};
-
+  };
 
   const eliminarFigura = async (id) => {
     const confirmar = window.confirm('¿Seguro que deseas eliminar esta figura?');
@@ -221,18 +219,17 @@ const actualizarFigura = async (e) => {
       if (res.ok) {
         setFiguras(prev => prev.filter(f => f.id !== id));
         setAlerta('Figura eliminada correctamente');
-        // Elimina el setTimeout aquí, la alerta se limpia por useEffect
       }
     } catch (error) {
       console.error('Error al eliminar figura:', error);
-      setAlerta('Error al obtener figuras'); // Unifica el mensaje de error
+      setAlerta('Error al obtener figuras');
     }
   };
 
-  // Filtro robusto: solo figuras válidas y con nombre string
   const figurasFiltradas = figuras.filter(
     (f) => f && typeof f.nombre === 'string' && f.nombre.toLowerCase().includes(busqueda.toLowerCase())
   );
+
   return (
     <div className="catalog-container">
 

@@ -1,13 +1,17 @@
 import './ProductCarrusel.css';
 import ProductCard from '../ProductCard/ProductCard';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function ProductCarrusel({ productos: iniciales, titulo }) {
   const [productos, setProductos] = useState(iniciales);
   const [isAnimating, setIsAnimating] = useState(false);
   const [direction, setDirection] = useState(null);
 
+  // ✅ Sincronizar props con estado local
+  useEffect(() => {
+    setProductos(iniciales);
+  }, [iniciales]);
 
   const handleScroll = (dir) => {
     if (isAnimating) return;
@@ -27,7 +31,7 @@ function ProductCarrusel({ productos: iniciales, titulo }) {
       });
       setIsAnimating(false);
       setDirection(null);
-    }, 300); // igual que la duración de la animación
+    }, 300);
   };
 
   return (
