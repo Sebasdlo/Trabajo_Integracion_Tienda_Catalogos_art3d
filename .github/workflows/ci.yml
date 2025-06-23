@@ -48,6 +48,8 @@ jobs:
       # 5. ✅ Frontend - Instalar dependencias y correr pruebas
       - name: 📦 Frontend - Instalar dependencias y ejecutar pruebas
         working-directory: Frontend
+        env:
+          REACT_APP_API_URL: http://localhost:5000/figuras # Ajusta el puerto/path según tu backend real
         run: |
           echo "🔧 Instalando dependencias Node.js"
           npm install
