@@ -1,11 +1,8 @@
 import { render, screen, fireEvent, waitFor, } from '@testing-library/react';
 import CatalogoFiguras from '../Pages/admin/CatalogoFiguras';
-
-
 import '@testing-library/jest-dom';
 import 'regenerator-runtime/runtime'; // Necesario para async/await en tests
-import { act } from 'react-dom/test-utils';
-import React from 'react';
+import { act } from 'react';
 
 beforeEach(() => {
   global.fetch = jest.fn();
@@ -173,7 +170,9 @@ describe('CatalogoFiguras', () => {
     fireEvent.click(screen.getByText('Consultar'));
 
     const botonEditar = await screen.findByText(/Editar/i);
-    fireEvent.click(botonEditar);
+    await act(async () => {
+      fireEvent.click(botonEditar);
+    });
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('Test figura')).toBeInTheDocument();
