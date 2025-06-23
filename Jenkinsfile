@@ -50,10 +50,10 @@ pipeline {
 
     stage('Subir cobertura a Codecov') {
       steps {
-        bat '''
-        curl -s https://codecov.io/bash -o codecov.sh
-        bash codecov.sh -f Backend/coverage.xml -F backend -t %CODECOV_TOKEN%
-        bash codecov.sh -f Frontend/coverage/lcov.info -F frontend -t %CODECOV_TOKEN%
+        powershell '''
+        Invoke-WebRequest -Uri "https://uploader.codecov.io/latest/windows/codecov.ps1" -OutFile "codecov.ps1"
+        powershell -ExecutionPolicy Bypass -File codecov.ps1 -f "Backend/coverage.xml" -F backend -t "$env:CODECOV_TOKEN"
+        powershell -ExecutionPolicy Bypass -File codecov.ps1 -f "Frontend/coverage/lcov.info" -F frontend -t "$env:CODECOV_TOKEN"
         '''
       }
     }
