@@ -47,17 +47,18 @@ pipeline {
         '''
       }
     }
-  stage('Subir cobertura a Codecov') {
-    steps {
-      powershell '''
-        # Descarga el uploader nativo de Codecov
+    stage('Subir cobertura a Codecov') {
+      steps {
+        powershell '''
+        # Descargar el uploader oficial de Codecov para Windows
         Invoke-WebRequest -Uri "https://cli.codecov.io/latest/windows/codecov.exe" -OutFile "codecov.exe"
-        
-        # Ejecuta el uploader sobre los reportes generados
-        .\\codecov.exe -f "Backend/coverage.xml" -F backend -t "$env:CODECOV_TOKEN"
-        .\\codecov.exe -f "Frontend/coverage/lcov.info" -F frontend -t "$env:CODECOV_TOKEN"
-      '''
+        # Subir reportes
+        .\\codecov.exe -f Backend/coverage.xml -F backend -t "$env:CODECOV_TOKEN"
+        .\\codecov.exe -f Frontend/coverage/lcov.info -F frontend -t "$env:CODECOV_TOKEN"
+        '''
+      }
     }
+
   }
   post {
     success {
