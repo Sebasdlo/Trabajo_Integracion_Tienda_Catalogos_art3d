@@ -3,16 +3,15 @@ import Home from '../Pages/Home/Home';
 import React from 'react';
 import '@testing-library/jest-dom';
 
-
 // Mocks de componentes hijos
-jest.mock('../Components/HeroCarrusel/HeroCarrusel', () => () => <div data-testid="hero-carrusel">HeroCarrusel</div>);
-jest.mock('../Components/ContactBanner/ContactBanner', () => () => <div data-testid="contact-banner">Contacto</div>);
+jest.mock('../components/HeroCarrusel/HeroCarrusel', () => () => <div data-testid="hero-carrusel">HeroCarrusel</div>);
+jest.mock('../components/ContactBanner/ContactBanner', () => () => <div data-testid="contact-banner">Contacto</div>);
 
-jest.mock('../Components/ProductCarrusel/ProductCarrusel', () => () => (
+jest.mock('../components/ProductCarrusel/ProductCarrusel', () => () => (
   <div data-testid="product-carrusel">Carrusel Mock</div>
 ));
 
-jest.mock('../Components/ProductCard/ProductCard', () => () => (
+jest.mock('../components/ProductCard/ProductCard', () => () => (
   <div data-testid="product-card">Card Mock</div>
 ));
 
