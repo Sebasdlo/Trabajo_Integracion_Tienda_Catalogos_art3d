@@ -392,7 +392,9 @@ test('Renderiza mensaje de éxito al actualizar', async () => {
 });
   test('Carga inicial: muestra alerta si falla fetch', async () => {
     fetch.mockImplementationOnce(() => Promise.reject(new Error('Error')));
-    render(<CatalogoFiguras />);
+    await act(async () => {
+      render(<CatalogoFiguras />);
+    });
     await waitFor(() => expect(screen.getByRole('alert')).toHaveTextContent('Error al obtener figuras'));
   });
   test('Valida campos requeridos al agregar sin llenar', async () => {
@@ -673,8 +675,9 @@ test('Filtra figuras por nombre en buscar', async () => {
 });
 test('Muestra alerta si fetch lanza excepción inesperada', async () => {
   fetch.mockRejectedValueOnce(new Error('fallo'));
-
-  render(<CatalogoFiguras />);
+  await act(async () => {
+    render(<CatalogoFiguras />);
+  });
   const alerta = await screen.findByRole('alert');
   expect(alerta).toHaveTextContent(/error/i);
 });
