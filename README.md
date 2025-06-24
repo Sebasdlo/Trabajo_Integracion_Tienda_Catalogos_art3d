@@ -24,6 +24,7 @@ Plataforma web para la administración y visualización de catálogos de product
 ├── Backend/           # API REST en Python (Flask)
 │   ├── app.py         # Punto de entrada del backend
 │   ├── firebase_service.py  # Integración con Firebase
+│   ├── Dockerfile            # Imagen Docker del backend
 │   ├── Requirements.txt     # Dependencias del backend
 │   └── test/          # Pruebas unitarias del backend
 ├── Frontend/          # Aplicación web en React
@@ -32,11 +33,17 @@ Plataforma web para la administración y visualización de catálogos de product
 │   │   ├── Pages/         # Páginas principales (Home, Productos, Diseño, Admin)
 │   │   └── tests/         # Pruebas unitarias de componentes y páginas
 │   ├── public/        # Archivos públicos
-│   ├── package.json   # Dependencias del frontend
-│   └── tests/         # Pruebas unitarias del frontend
-├── docker-compose.yml # Orquestación de contenedores
-├── Jenkinsfile        # Pipeline de CI/CD
-└── README.md          # Este archivo
+│   ├── tests/         # Pruebas unitarias del frontend
+│   ├── package.json          # Dependencias del frontend
+│   ├── Dockerfile            # Imagen Docker del frontend
+│   ├── nginx.conf            # Configuración de Nginx para producción
+│   ├── .env                  # Variables de entorno para los contrenedores
+│   └── .env.development      # Variables de entorno para desarrollo 
+├── .codecov.yml              # Configuración de Codecov
+├── .gitignore                # Exclusiones de Git
+├── Jenkinsfile               # Pipeline de CI/CD para Jenkins
+├── README.md                 # Este archivo
+├── docker-compose.yml        # Orquestación de contenedores
 ```
 
 ## Instalación y ejecución local
