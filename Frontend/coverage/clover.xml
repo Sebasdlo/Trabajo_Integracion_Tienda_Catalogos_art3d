@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1750695257346" clover="3.2.0">
-  <project timestamp="1750695257346" name="All files">
-    <metrics statements="211" coveredstatements="169" conditionals="109" coveredconditionals="80" methods="80" coveredmethods="70" elements="400" coveredelements="319" complexity="0" loc="211" ncloc="211" packages="10" files="11" classes="11"/>
+<coverage generated="1750736742857" clover="3.2.0">
+  <project timestamp="1750736742857" name="All files">
+    <metrics statements="211" coveredstatements="168" conditionals="109" coveredconditionals="79" methods="80" coveredmethods="69" elements="400" coveredelements="316" complexity="0" loc="211" ncloc="211" packages="10" files="11" classes="11"/>
     <package name="src">
       <metrics statements="5" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="App.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\App.js">
@@ -24,9 +24,9 @@
       </file>
     </package>
     <package name="src.Pages.Home">
-      <metrics statements="18" coveredstatements="18" conditionals="17" coveredconditionals="11" methods="6" coveredmethods="6"/>
+      <metrics statements="18" coveredstatements="17" conditionals="17" coveredconditionals="10" methods="6" coveredmethods="5"/>
       <file name="Home.js" path="E:\git\Reutilizable\Trabajo_Integracion_Tienda_Catalogos_art3d\Frontend\src\Pages\Home\Home.js">
-        <metrics statements="18" coveredstatements="18" conditionals="17" coveredconditionals="11" methods="6" coveredmethods="6"/>
+        <metrics statements="18" coveredstatements="17" conditionals="17" coveredconditionals="10" methods="6" coveredmethods="5"/>
         <line num="9" count="4" type="stmt"/>
         <line num="10" count="4" type="stmt"/>
         <line num="13" count="4" type="stmt"/>
@@ -44,7 +44,7 @@
         <line num="39" count="2" type="stmt"/>
         <line num="43" count="3" type="stmt"/>
         <line num="46" count="4" type="stmt"/>
-        <line num="60" count="2" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.Pages.Products">

@@ -17,4 +17,4 @@ __pycache__/
 .idea
 
 # Ignorar reportes de cobertura generados por jest/codecov
-coverage/lcov-report/
+frontend/coverage/lcov-report/
