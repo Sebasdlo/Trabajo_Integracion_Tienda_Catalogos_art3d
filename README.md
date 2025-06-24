@@ -77,6 +77,21 @@ Plataforma web para la administración y visualización de catálogos de product
    npm start
    ```
 
+## Pruebas
+
+### Backend
+Desde la carpeta `Backend`:
+```bash
+pytest --cov=src --cov-report=xml
+```
+
+### Frontend
+Desde la carpeta `Frontend`:
+```bash
+npm test -- --coverage --watchAll=false
+
+```
+
 ### Subir cobertura a Codecov
 
 Asegúrate de tener configurado el token de Codecov en tu entorno o CI/CD.
@@ -101,20 +116,6 @@ Asegúrate de tener configurado el token de Codecov en tu entorno o CI/CD.
    ```bash
     codecov -f coverage/lcov.info <tu_token_codecov>
    ```
-
-## Pruebas
-
-### Backend
-Desde la carpeta `Backend`:
-```bash
-pytest
-```
-
-### Frontend
-Desde la carpeta `Frontend`:
-```bash
-npm test
-```
 
 ## Uso con Docker
 
