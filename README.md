@@ -16,6 +16,8 @@ Plataforma web para la administración y visualización de catálogos de product
 - Dockerización de backend y frontend para despliegue sencillo
 - Pruebas automatizadas para ambos módulos
 - Pipeline de CI/CD integrado
+- CI con GitHub Actions y Jenkins
+- Reportes de cobertura en Codecov
 
 ## Estructura del repositorio
 ```
@@ -66,6 +68,31 @@ Plataforma web para la administración y visualización de catálogos de product
 3. Ejecuta la aplicación:
    ```bash
    npm start
+   ```
+
+### Subir cobertura a Codecov
+
+Asegúrate de tener configurado el token de Codecov en tu entorno o CI/CD.
+
+#### Backend (Python)
+1. Ejecuta las pruebas y genera el reporte de cobertura:
+   ```bash
+   coverage run -m pytest
+   coverage xml
+   ```
+2. Sube el reporte a Codecov:
+   ```bash
+   codecov -t <tu_token_codecov>
+   ```
+
+#### Frontend (React)
+1. Ejecuta las pruebas para generar el reporte de cobertura:
+   ```bash
+   npm test -- --coverage --watchAll=false   
+   ```
+2. Sube el reporte a Codecov:
+   ```bash
+    codecov -f coverage/lcov.info <tu_token_codecov>
    ```
 
 ## Pruebas
